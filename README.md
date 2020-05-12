@@ -1,68 +1,42 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+## Simple Todo List Application
+
+This project was created with the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
 
-In the project directory, you can run:
+### How to run this project
 
-### `yarn start`
+run `npm start` to serve on [localhost:3000](http://localhost:3000)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+run `npm run build` to run in production
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### FYI
 
-### `yarn test`
+#### Providing the `store`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+untuk menerapkan `store` pada aplikasi, kita dapat membungkus komponen terluar dengan `<Provide store={store}>`.
 
-### `yarn build`
+#### Connecting Components
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+terdapat komponen yang menggunakan method `connect` dimana berfungsi untuk membaca nilai dari store(mendeteksi perubahan nilai pada store).
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+`connect` membutuhkan dua argumen :
+- `mapStateToProps` dipanggil ketika terjadi perubahan pada store. Berupa fungsi yang menerima semua state pada store dan mengembalikan objek data untuk digunakan dalam komponen
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `mapDispatchToProps` dapat berupa fungsi ataupun objek. Disebutkan pada [Redux](https://redux.js.org/) :
 
-### `yarn eject`
+Jika berbentuk fungsi, itu akan dipanggil sekali pada pembuatan komponen. Itu akan menerima `dispatch` sebagai argumen, dan harus mengembalikan objek penuh fungsi yang digunakan `dispatch` untuk mengirim tindakan.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Jika itu adalah objek yang penuh dengan pembuat tindakan, setiap pembuat tindakan akan diubah menjadi fungsi penyangga yang secara otomatis mengirimkan tindakannya saat dipanggil.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Components
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- `TodoApp` sebagai entri utama aplikasi yang mencakup komponen `AddTodo`, `TodoList`, dan `VisibilityFilters`.
+- `AddTodo` berfungsi memiliki fungsi untuk memasukkan item todo dan menambahkan ke dalam daftar ketika mengklik tombol `Add Todo`. Proses :
+    1. Menerima perubahan data melalui input dengan `onChange`
+    2. Mengirimkan `action` untuk menambahkan todo ke store ketika mengklik tombol `Add Todo`
+- `TodoList` menampung daftar todos dengan melihat status yang dikirimkan ketika `VisibilityFilters` dipilih.
+- `Todo` sebagai komponent yang menampilkan data todo (tunggal). Terdapat fungsi untuk merubah status pada object completed (true or false) yang dijalankan pada event `onClick`.
+- `VisibilityFilters` mencakup filter (`all`, `completed`, `incomplete`).
+    1. Menerima prop `activeFilter` dari induk untuk menunjukkan filter yang digunakan oleh user. 
+    2. Mengirimkan action `setFilter` untuk memperbarui filter yang dipilih
